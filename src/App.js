@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import { getUserMantenimiento } from "./services";
+import { Formulario, Tabla } from "./components";
+import "./App.css";
 
 function App() {
+  const [user, setUser] = useState([]);
+
+  async function getUsuario() {
+    const usuario = await getUserMantenimiento();
+    console.log(usuario);
+    setUser(usuario);
+  }
+
+  useEffect(() => {
+    getUsuario();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="row my-5">
+        <h2>Mantenimiento de Usuarios</h2>
+      </div>
+      <Formulario />
+      <div className="row my-4">
+        <div className="d-flex">
+          <div className="col-md-1">#</div>
+          <div className="col-md-2">Nombres</div>
+          <div className="col-md-2">Apellidos</div>
+          <div className="col-md-2">Correo</div>
+          <div className="col-md-1">Edad</div>
+          <div className="col-md-1">Sexo</div>
+          <div className="col-md-1">Cargo</div>
+          <div className="col-md-2">Direccion</div>
+        </div>
+      </div>
+      <Tabla user={user} />
     </div>
   );
 }
